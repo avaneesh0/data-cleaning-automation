@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def fileDetail():
+def fileDetail() -> list:
     directory = "data/raw/"
     logging.info(f"Checking file in {directory}")
     files = [f for f in os.listdir(directory) if f != ".gitkeep"]
@@ -95,10 +95,10 @@ def write_report_before_cleaning(report: list):
         f.write(f"-- Duplicate row : {sub_dict['duplicate']}\n")
         f.write("\n")
         f.write("Invalid Values\n")
-        f.write("-- We be added later\n")
+        f.write("-- Will be added later\n")
         f.write("\n")
         f.write("Data Type Issues\n")
-        f.write("-- We be added later\n")
+        f.write("-- Will be added later\n")
         f.write("\n")
         f.write(f"Status: {sub_dict['Status']}\n")
         f.write("\n")
@@ -121,10 +121,10 @@ def write_report_after_cleaning(report: list):
         f.write(f"-- Duplicate row : {sub_dict['duplicate']}\n ")
         f.write("\n")
         f.write("Invalid Values\n")
-        f.write("-- We be added later\n")
+        f.write("-- Will be added later\n")
         f.write("\n")
         f.write("Data Type Issues\n")
-        f.write("-- We be added later\n")
+        f.write("-- Will be added later\n")
         f.write("\n")
         f.write(f"Status: {sub_dict['Status']}\n")
         f.write("\n")
