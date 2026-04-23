@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from src.cleaning import detect_datetime_columns
 import logging
 
 logger = logging.getLogger(__name__)
@@ -51,9 +52,21 @@ def dataframe_report(df: pd.DataFrame , report = []) -> dict :
     
     data_dict["Status"] = "✅ Passed"
     
+    date_col = detect_datetime_columns(df)
+    for d_col in date_col:
+            print("was there")
+            data_dict["data_type_changed"] = {"column": d_col,
+                                              "dtype": df[d_col].dtype
+                                              }
+            data_dict["Status"] = "❌ Failed"
+            
     for col in df.columns:
         
-        data_dict["duplicate"] = df.duplicated().sum()
+        if df.duplicated().sum():
+            data_dict["duplicate"] = df.duplicated().sum()
+            data_dict["Status"] = "❌ Failed"
+        else:
+            data_dict["duplicate"] = df.duplicated().sum()
         
         if df[col].isnull().sum() > 0:
             data_list.append({"column": col,
@@ -66,6 +79,13 @@ def dataframe_report(df: pd.DataFrame , report = []) -> dict :
         for r in report[0]:
             data_list.append({"column": r['column'],
                               "null_value": df[r['column']].isnull().sum()})
+            
+        dt_changed_col = report[1]["data_type_changed"]["column"]
+        
+        data_dict["data_type_changed"] = {"column": dt_changed_col,
+                                        "dtype": df[dt_changed_col].dtype
+                                        }
+        
     else:
         logging.info("Preparing file report before cleaning")
     
